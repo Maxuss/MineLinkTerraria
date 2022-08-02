@@ -1,23 +1,23 @@
 using System.Threading;
-using MineLink.Network;
+using TerraLink.Network;
 using Terraria.ModLoader;
 
-namespace MineLink
+namespace TerraLink
 {
-	public class MineLink : Mod
+	public class TerraLinkMod : Mod
 	{
-		public static MineLink Instance { get; private set; }
+		public static TerraLinkMod Instance { get; private set; }
 		public static LinkerClient Client { get; private set; }
 		
 		public override void Load()
 		{
 			Instance = this;
 			Client = new LinkerClient();
-			Logger.Info("Enabling MineLink...");
+			Logger.Info("Enabling TerraLink...");
 
 			var connectionThread = new Thread(Client.Connect)
 			{
-				Name = "MineLink Connector"
+				Name = "TerraLink Connector"
 			};
 			connectionThread.Start();
 		}

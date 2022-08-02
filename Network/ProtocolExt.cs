@@ -1,24 +1,32 @@
 using System;
 using System.Buffers.Binary;
 using System.IO;
+using System.Net.Sockets;
 using System.Text;
 
-namespace MineLink.Network;
+namespace TerraLink.Network;
 
 public static class ProtocolExt
 {
     private const int MaxStrLen = short.MaxValue;
     
-    public static void WriteStr(this BufferedStream stream, string str)
+    public static void WriteStr(this NetworkStream stream, string str)
     {
         var bytes = Encoding.UTF8.GetBytes(str);
         if (bytes.Length >= MaxStrLen)
-            MineLink.Instance.Logger.Warn($"Writing string of size over MaxStrLen ({bytes.Length} > {MaxStrLen}). This might disconnect client from older bridge versions!");
-        stream.Write(BitConverter.GetBytes(bytes.Length));
+            TerraLinkMod.Instance.Logger.Warn($"Writing string of size over MaxStrLen ({bytes.Length} > {MaxStrLen}). This might disconnect client from older bridge versions!");
+        var len = bytes.Length;
+        stream.Write(new[]
+        {
+            (byte) (len >> 24),
+            (byte) (len >> 16),
+            (byte) (len >> 8),
+            (byte) (len >> 0)
+        });
         stream.Write(bytes);
     }
 
-    public static string ReadStr(this BufferedStream stream)
+    public static string ReadStr(this NetworkStream stream)
     {
         var lenBuffer = new byte[4];
         _ = stream.Read(lenBuffer);

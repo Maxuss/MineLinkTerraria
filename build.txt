@@ -1,3 +1,3 @@
-displayName = Minecraft Link
+displayName = Terraria Link
 author = maxus
 version = 0.1

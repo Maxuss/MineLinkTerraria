@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using MineLink.Network.Packets;
+using System.Net.Sockets;
+using TerraLink.Network.Packets;
 
-namespace MineLink.Network;
+namespace TerraLink.Network;
 
 public static class Protocol
 {
@@ -14,7 +13,7 @@ public static class Protocol
         Definition[(byte) id] = reader;
     }
 
-    public static IPacket ReadPacket(byte id, BufferedStream stream)
+    public static IPacket ReadPacket(byte id, NetworkStream stream)
     {
         return Definition[id].ReadPacket(stream);
     }
@@ -28,8 +27,8 @@ public static class Protocol
 
     public enum PacketId: byte
     {
-        Connect,
-        Disconnect,
-        StateAdvance,
+        Connect = 0,
+        Disconnect = 1,
+        StateAdvance = 2,
     }
 }

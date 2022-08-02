@@ -1,15 +1,14 @@
-using System.IO;
-using System.Threading.Tasks;
+using System.Net.Sockets;
 
-namespace MineLink.Network.Packets;
+namespace TerraLink.Network.Packets;
 
 public interface IPacket
 {
     public IPacketReader<IPacket> Reader { get; }
-    public void WritePacket(BufferedStream to);
+    public void WritePacket(NetworkStream to);
 }
 
 public interface IPacketReader<out TPacket> where TPacket: IPacket
 {
-    public TPacket ReadPacket(BufferedStream from);
+    public TPacket ReadPacket(NetworkStream from);
 }
