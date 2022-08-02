@@ -1,0 +1,35 @@
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using MineLink.Network.Packets;
+
+namespace MineLink.Network;
+
+public static class Protocol
+{
+    private static Dictionary<byte, IPacketReader<IPacket>> Definition { get; } = new();
+
+    public static void AddPacket(PacketId id, IPacketReader<IPacket> reader)
+    {
+        Definition[(byte) id] = reader;
+    }
+
+    public static IPacket ReadPacket(byte id, BufferedStream stream)
+    {
+        return Definition[id].ReadPacket(stream);
+    }
+    
+    static Protocol()
+    {
+        AddPacket(PacketId.Connect, new ConnectPacket.Read());
+        AddPacket(PacketId.Disconnect, new DisconnectPacket.Read());
+        AddPacket(PacketId.StateAdvance, new AdvancePacket.Read());
+    }
+
+    public enum PacketId: byte
+    {
+        Connect,
+        Disconnect,
+        StateAdvance,
+    }
+}

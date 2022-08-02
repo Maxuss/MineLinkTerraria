@@ -1,5 +1,3 @@
-using On.Terraria.GameContent.Liquid;
-using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -27,7 +25,6 @@ namespace MineLink.Items
 			Item.rare = ItemRarityID.Expert;
 			Item.UseSound = SoundID.Item1;
 			Item.autoReuse = true;
-			LiquidRenderer
 		}
 
 		public override void AddRecipes()
